@@ -54,6 +54,7 @@ class SocketHandle extends Thread {
             }
         } catch (Exception e) {
             try {
+                //关闭socket接口
                 this.socket.close();
             } catch (IOException ex) {
                 System.out.println("Client disconnected.....");
@@ -62,17 +63,22 @@ class SocketHandle extends Thread {
 
 
     }
-
+    //具体的处理方式，只包括正确的请求和错误请求
     private void handle(InputStream inputStream, OutputStream outputStream) throws IOException {
+        //创建输入流
         Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
+        //创建输出流
         Writer writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
         //读取http请求
         boolean requestStatus = false;
+        //获取输入流的第一条信息，是否以GET / HTTP/1.（程序中只针对get做出处理）
         String startFirst = ((BufferedReader) reader).readLine();
-        if (startFirst.startsWith("GET / HTTP/")) {
+        if (startFirst.startsWith("GET / HTTP/1.")) {
             requestStatus = true;
         }
+        //循环处理
         for (; ; ) {
+            //读取传入的头部信息
             String header = ((BufferedReader) reader).readLine();
             if (header.isEmpty()) {
                 break;
@@ -86,6 +92,7 @@ class SocketHandle extends Thread {
             writer.write("HTTP/1.0 404 Not Found\r\n");
             writer.write("Content-Length: 0\r\n");
             writer.write("\r\n");
+            //清空输出流中的缓存
             writer.flush();
         } else {//正确响应
             String printInfo = "<html><body><h1> Hello World,local server is coming</h1></body></html>";
