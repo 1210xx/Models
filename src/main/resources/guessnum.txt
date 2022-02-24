@@ -1,0 +1,19 @@
+ DROP DATABASE IF EXISTS guessnum;
+
+CREATE DATABASE guessnum;
+
+CREATE USER IF NOT EXISTS guessnum@'%' IDENTIFIED BY 'guessnumpassword';
+
+GRANT ALL PRIVILEGES ON guessnum.* TO guessnum@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;
+
+USE guessnum;
+
+ CREATE TABLE guessnumtable (
+   id BIGINT AUTO_INCREMENT NOT NULL,
+   inputNum INT NOT NULL,
+  result BOOL NOT NULL,
+  PRIMARY KEY(id)
+ ) Engine=INNODB DEFAULT CHARSET=UTF8;
+
