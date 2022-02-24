@@ -1,4 +1,4 @@
-package standalonedemo;
+package console.guessnum;
 
 /**
  * 1 使用数据库统计（新建DButil类）

@@ -1,4 +1,4 @@
-package standalonedemo;
+package guessnumdemo;
 
 import java.util.Random;
 import java.util.Scanner;
