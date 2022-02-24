@@ -19,6 +19,10 @@ public class ServerTest {
         //开启线程，处理接口数据
         for (;;) {
             //监听于此端口连接的socket并且接收发送信息。
+            //accept()表示每当有新的客户端连接进来后，就返回一个Socket实例，
+            // 这个Socket实例就是用来和刚连接的客户端进行通信的。
+            // 由于客户端很多，要实现并发处理，我们就必须为每个新的Socket创建一个新线程来处理，
+            // 这样，主线程的作用就是接收新的连接，每当收到新连接后，就创建一个新线程进行处理
             Socket socket_l = socket.accept();
             //输出接收到的接口地址
             System.out.println("Connected from " + socket_l.getRemoteSocketAddress());
