@@ -53,6 +53,7 @@ public class DBTest {
         // 并且把数据连同SQL本身传给数据库，这样可以保证每次传给数据库的SQL语句是相同的，只是占位符的数据不同，
         // 还能高效利用数据库本身对查询的缓存。
         try (Connection conn = DriverManager.getConnection(JDBC_URL, JDBC_USER, JDBC_PASSWORD)) {
+            //try（resource） 自动关闭打开资源，需要创建的对象实现了autocloseable接口
             try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE gender=? AND grade=?")) {
                 ps.setObject(1, 0); // 注意：索引从1开始
                 ps.setObject(2, 3);
