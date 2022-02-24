@@ -1,5 +1,9 @@
 package dbtest;
 
+import com.zaxxer.hikari.HikariConfig;
+import com.zaxxer.hikari.HikariDataSource;
+
+import javax.sql.DataSource;
 import java.sql.*;
 
 public class DBTest {
@@ -9,9 +13,39 @@ public class DBTest {
         String JDBC_USER = "root";
         String JDBC_PASSWORD = "password";
 
+        jdbcConnPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+//        jdbcPreparedStatement(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
 
-        jdbcPreparedStatement(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    }
+    public static void jdbcConnPool(String JDBC_URL, String JDBC_USER, String JDBC_PASSWORD){
+        HikariConfig config = new HikariConfig();
+        config.setJdbcUrl(JDBC_URL);
+        config.setUsername(JDBC_USER);
+        config.setPassword(JDBC_PASSWORD);
+        config.addDataSourceProperty("connectionTimeout", "1000"); // 连接超时：1秒
+        config.addDataSourceProperty("idleTimeout", "60000"); // 空闲超时：60秒
+        config.addDataSourceProperty("maximumPoolSize", "10"); // 最大连接数：10
+        DataSource ds = new HikariDataSource(config);
 
+        try (Connection conn = ds.getConnection()) { // 在此获取连接
+            try (PreparedStatement ps = conn.prepareStatement("SELECT id, grade, name, gender FROM students WHERE gender=? AND grade=?")) {
+                ps.setObject(1, 0); // 注意：索引从1开始
+                ps.setObject(2, 3);
+                try (ResultSet rs = ps.executeQuery()) {
+                    while (rs.next()) {
+                        long id = rs.getLong("id");
+                        long grade = rs.getLong("grade");
+                        String name = rs.getString("name");
+                        String gender = rs.getString("gender");
+                        System.out.println("id: " + id + " grade: " + grade +" name: "+ name +" gender: "+ gender);
+                    }
+                }
+            }
+            conn.close();
+        } // 在此“关闭”连接
+        catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
     
     public static void jdbcPreparedStatement(String JDBC_URL, String JDBC_USER, String JDBC_PASSWORD){

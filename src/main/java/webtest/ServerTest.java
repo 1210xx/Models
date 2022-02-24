@@ -1,6 +1,8 @@
 package webtest;
 
 
+import sun.net.www.http.HttpClient;
+
 import java.io.*;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -12,12 +14,40 @@ import java.nio.charset.StandardCharsets;
  * 多线程实现
  */
 public class ServerTest {
+    // 全局HttpClient:
+    //static HttpClient httpClient = HttpClient.newBuilder().build();
+
     public static void main(String[] args) throws IOException {
+        //serverFun();
+
+
+    }
+    //JDK11
+    public static void httpFun() {
+        String url = "https://www.sina.com.cn/";
+//        HttpRequest request = HttpRequest.newBuilder(new URI(url))
+                // 设置Header:
+//                .header("User-Agent", "Java HttpClient").header("Accept", "*/*")
+                // 设置超时:
+//                .timeout(Duration.ofSeconds(5))
+                // 设置版本:
+//                .version(Version.HTTP_2).build();
+//        HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
+        // HTTP允许重复的Header，因此一个Header可对应多个Value:
+//        Map<String, List<String>> headers = response.headers().map();
+//        for (String header : headers.keySet()) {
+//            System.out.println(header + ": " + headers.get(header).get(0));
+//        }
+//        System.out.println(response.body().substring(0, 1024) + "...");
+
+    }
+
+    public static void serverFun() throws IOException {
         //创建并绑定端口
         ServerSocket socket = new ServerSocket(8080);
         System.out.println("Server is running....(Just listening)");
         //开启线程，处理接口数据
-        for (;;) {
+        for (; ; ) {
             //监听于此端口连接的socket并且接收发送信息。
             //accept()表示每当有新的客户端连接进来后，就返回一个Socket实例，
             // 这个Socket实例就是用来和刚连接的客户端进行通信的。
@@ -32,12 +62,15 @@ public class ServerTest {
             handleThread.run();
         }
     }
+
 }
+
 
 //socket 处理类
 class SocketHandle extends Thread {
     //socket 字段
     Socket socket;
+
     //socketHandle 无参构造方法
     SocketHandle(Socket socket) {
         this.socket = socket;
@@ -67,6 +100,7 @@ class SocketHandle extends Thread {
 
 
     }
+
     //具体的处理方式，只包括正确的请求和错误请求
     private void handle(InputStream inputStream, OutputStream outputStream) throws IOException {
         //创建输入流
