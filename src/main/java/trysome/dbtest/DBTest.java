@@ -1,4 +1,4 @@
-package dbtest;
+package trysome.dbtest;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;

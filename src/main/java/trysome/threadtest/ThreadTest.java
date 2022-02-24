@@ -1,4 +1,4 @@
-package threadtest;
+package trysome.threadtest;
 
 import java.io.File;
 

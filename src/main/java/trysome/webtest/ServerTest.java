@@ -1,7 +1,5 @@
-package webtest;
+package trysome.webtest;
 
-
-import sun.net.www.http.HttpClient;
 
 import java.io.*;
 import java.net.ServerSocket;
