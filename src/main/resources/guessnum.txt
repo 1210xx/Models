@@ -12,8 +12,10 @@ USE guessnum;
 
  CREATE TABLE guessnumtable (
    id BIGINT AUTO_INCREMENT NOT NULL,
+   time INT NOT NULL,
    inputNum INT NOT NULL,
-  result BOOL NOT NULL,
+   targetNum INT NOT NULL,
+   result BOOL NOT NULL,
   PRIMARY KEY(id)
  ) Engine=INNODB DEFAULT CHARSET=UTF8;
 

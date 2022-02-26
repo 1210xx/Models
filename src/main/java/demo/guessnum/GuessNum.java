@@ -10,7 +10,7 @@ package demo.guessnum;
  * 3 当用户猜中数字后，除了提示恭喜之外，还要输出猜数的历史记录（按时间倒序输出）
  */
 public class GuessNum {
-    String JDBC_URL = "jdbc:mysql://localhost:3306/guessnum?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true";
+    String JDBC_URL = "jdbc:mysql://localhost:3306/guessnum?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     //        String JDBC_USER = "root";
 //        String JDBC_PASSWORD = "password";
     String JDBC_USER = "guessnum";

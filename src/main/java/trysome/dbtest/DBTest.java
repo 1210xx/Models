@@ -9,7 +9,7 @@ import java.sql.*;
 public class DBTest {
     public static void main(String[] args) throws SQLException {
         // JDBC连接的URL, 不同数据库有不同的格式:
-        String JDBC_URL = "jdbc:mysql://localhost:3306/learnjdbc?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true";
+        String JDBC_URL = "jdbc:mysql://localhost:3306/learnjdbc?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
         String JDBC_USER = "root";
         String JDBC_PASSWORD = "password";
 

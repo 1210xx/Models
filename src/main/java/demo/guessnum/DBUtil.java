@@ -1,8 +1,6 @@
 package demo.guessnum;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.sql.*;
 
 /**
  * 1 使用数据库统计（新建DButil类）
@@ -32,14 +30,28 @@ public class DBUtil {
      * - 每次猜测的时间
      * - 猜测的数字
      * - 猜测的结果
-     * @param totalTime
+     * @param time
      */
-    public void recordState(long totalTime){
+    public int reconrdState(String time, int inputNum, int targetNum, int result){
+        int numrecord = -1;
+        String sql = "INSERT INTO guessnumtable (time, inputNum, targetNum, result) VALUES (?, ?, ?, ?)";
         try(Connection connection = DriverManager.getConnection(this.url, this.user, this.password)) {
-
+            try(PreparedStatement ps = connection.prepareStatement(sql,Statement.RETURN_GENERATED_KEYS)){
+                ps.setObject(1,time);
+                ps.setObject(2,inputNum);
+                ps.setObject(3,targetNum);
+                ps.setObject(4,result);
+                numrecord = ps.executeUpdate();
+                try (ResultSet resultSet = ps.getGeneratedKeys()){
+                    if (resultSet.next()){
+                        long id = resultSet.getLong(1);
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        return numrecord;
     }
 
     /**
