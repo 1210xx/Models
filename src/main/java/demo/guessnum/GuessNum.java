@@ -1,5 +1,8 @@
 package demo.guessnum;
 
+import java.util.Random;
+import java.util.Scanner;
+
 /**
  * 1 使用数据库统计（新建DButil类）
  * - 每次猜测的时间
@@ -22,6 +25,25 @@ public class GuessNum {
     }
 
     public boolean guessNumApp(){
+        //产生100以内的随机数
+        int destNum = new Random().nextInt(100);
+        System.out.println(destNum);
+        //初始化输入数
+        int srcNum = -1;
+        //开启接收
+        try (Scanner scanner = new Scanner(System.in)) {
+            srcNum = scanner.nextInt();
+            while (destNum != srcNum) {
+                if (srcNum < destNum) {
+                    System.out.println("Oops, small,please try another");
+                    srcNum = scanner.nextInt();
+                } else {
+                    System.out.println("Oh, big,please try another");
+                    srcNum = scanner.nextInt();
+                }
+            }
+        }
+        System.out.println("Congratulation!!!");
 
         return true;
     }
