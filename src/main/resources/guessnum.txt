@@ -1,4 +1,4 @@
- DROP DATABASE IF EXISTS guessnum;
+DROP DATABASE IF EXISTS guessnum;
 
 CREATE DATABASE guessnum;
 
