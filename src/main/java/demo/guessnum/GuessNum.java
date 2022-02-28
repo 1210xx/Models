@@ -64,7 +64,7 @@ public class GuessNum {
                 }
             }
         }
-        resultFlag = 1;
+        resultFlag = RIGHT;
         Date time = new Time(System.currentTimeMillis());
         String stringTime = time.toString();
         dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
