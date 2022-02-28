@@ -59,10 +59,38 @@ public class DBUtil {
      */
     public void printRecord(){
         try(Connection connection = DriverManager.getConnection(this.url, this.user, this.password)) {
+            String sql = "SELECT * FROM guessnumtable ORDER BY time DESC";
+            try(PreparedStatement ps = connection.prepareStatement(sql);) {
+                try(ResultSet rs = ps.executeQuery()) {
+                    System.out.println("    时间    |   输入数   |    目标数  |   结果  ");
+                    while (rs.next()){
+                        String time = rs.getString(2);
+                        int inputNum = rs.getInt(3);
+                        int targetNum = rs.getInt(4);
+                        int result = rs.getInt(5);
 
+                        System.out.println(" "+time + "        " + inputNum + "         " + targetNum + "         " + result );
+                    }
+                }
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
+
+    public int clearTable(){
+        int numChanged = -1;
+        try(Connection connection = DriverManager.getConnection(this.url, this.user, this.password)) {
+            String sql = "TRUNCATE TABLE guessnumtable";
+            try(PreparedStatement ps = connection.prepareStatement(sql)) {
+                numChanged = ps.executeUpdate();
+                System.out.println("清空表   执行    " + numChanged);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return numChanged;
+    }
+
 
 }
