@@ -10,6 +10,31 @@ import java.util.Map;
 
 /**
  * <p>
+ *  <br>
+ *  编写一个完善的HTTP服务器，以HTTP/1.1为例，需要考虑的包括：
+ *  <br>
+ *  <ul>
+ *      <li>识别正确和错误的HTTP请求</li>
+ *      <li>别正确和错误的HTTP头</li>
+ *      <li>复用TCP连接</li>
+ *      <li>复用线程</li>
+ *      <li>IO异常处理</li>
+ *      <li>...</li>
+ *  </ul>
+ * </p>
+ *
+ *<p>
+ *  这些基础工作需要耗费大量的时间，并且经过长期测试才能稳定运行。
+ *  <br>
+ *  如果我们只需要输出一个简单的HTML页面，就不得不编写上千行底层代码，那就根本无法做到高效而可靠地开发。
+ *  <br>
+ *  在JavaEE平台上，处理TCP连接，解析HTTP协议这些底层工作统统扔给现成的<b>Web服务器</b>去做，我们只需要把自己的应用程序跑在Web服务器上。
+ *  <br>
+ *  <br>
+ *  为了实现这一目的，JavaEE提供了Servlet API，使用Servlet API编写自己的Servlet来处理HTTP请求，Web服务器实现Servlet API接口，实现底层功能.
+ *</p>
+ *
+ * <p>
  *      <br>
  *      一个Servlet总是继承自HttpServlet，然后覆写doGet()或doPost()方法。
  *      <br>
