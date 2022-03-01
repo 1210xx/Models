@@ -25,9 +25,13 @@ public class GuessNum {
     final static int WRONG = 0;
     final static int RIGHT = 1;
 
+    static DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+
     public static void main(String[] args) {
-        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-        dbUtil.clearTable();
+//        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+//        dbUtil.clearTable();
+//        DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        dbUtilPool.clearTable();
         GuessNum guessNum = new GuessNum();
         guessNum.guessNumApp();
     }
@@ -41,7 +45,9 @@ public class GuessNum {
         //结果标志
         int resultFlag = -1;
         //数据库工具
-        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+//        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        //数据连接池
+//        DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
         //开启接收
         try (Scanner scanner = new Scanner(System.in)) {
             srcNum = scanner.nextInt();
@@ -50,14 +56,16 @@ public class GuessNum {
                 if (srcNum < destNum) {
                     Date time = new Time(System.currentTimeMillis());
                     String stringTime = time.toString();
-                    dbUtil.reconrdState(stringTime,srcNum, destNum, resultFlag);
+//                    dbUtil.reconrdState(stringTime,srcNum, destNum, resultFlag);
+                    dbUtilPool.reconrdState(stringTime,srcNum, destNum, resultFlag);
                     System.out.println("Oops, small,please try another");
                     System.out.println("有点小，重试一下呢");
                     srcNum = scanner.nextInt();
                 } else {
                     Date time = new Time(System.currentTimeMillis());
                     String stringTime = time.toString();
-                    dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+//                    dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+                    dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
                     System.out.println("Oh, big,please try another");
                     System.out.println("大了，网小点试试？？？");
                     srcNum = scanner.nextInt();
@@ -67,11 +75,13 @@ public class GuessNum {
         resultFlag = RIGHT;
         Date time = new Time(System.currentTimeMillis());
         String stringTime = time.toString();
-        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+//        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+        dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
         System.out.println("\r\n");
         System.out.println("Congratulation!!!");
         System.out.println("！！！！恭喜！！！！");
-        dbUtil.printRecord();
+//        dbUtil.printRecord();
+        dbUtilPool.printRecord();
         return true;
     }
 }

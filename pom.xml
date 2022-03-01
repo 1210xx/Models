@@ -6,18 +6,21 @@
 
     <groupId>Models</groupId>
     <artifactId>Models-RJ</artifactId>
+    <!-- 打成war包-->
+    <packaging>war</packaging>
     <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>8</maven.compiler.source>
         <maven.compiler.target>8</maven.compiler.target>
+        <tomcat.version>9.0.26</tomcat.version>
     </properties>
 
    <dependencies>
        <dependency>
            <groupId>mysql</groupId>
            <artifactId>mysql-connector-java</artifactId>
-           <version>8.0.20</version>
+           <version>8.0.19</version>
            <scope>runtime</scope>
        </dependency>
        <dependency>
@@ -38,7 +41,27 @@
            <version>RELEASE</version>
            <scope>test</scope>
        </dependency>
+       <dependency>
+           <groupId>javax.servlet</groupId>
+           <artifactId>javax.servlet-api</artifactId>
+           <version>4.0.0</version>
+           <!-- <scope>指定为provided，表示编译时使用，但不会打包到.war文件中，因为运行期Web服务器本身已经提供了Servlet API相关的jar包。-->
+           <scope>provided</scope>
+       </dependency>
 
+       <!-- 内嵌tomcat运行webapp-->
+       <dependency>
+           <groupId>org.apache.tomcat.embed</groupId>
+           <artifactId>tomcat-embed-core</artifactId>
+           <version>${tomcat.version}</version>
+           <scope>provided</scope>
+       </dependency>
+       <dependency>
+           <groupId>org.apache.tomcat.embed</groupId>
+           <artifactId>tomcat-embed-jasper</artifactId>
+           <version>${tomcat.version}</version>
+           <scope>provided</scope>
+       </dependency>
    </dependencies>
 
 </project>
