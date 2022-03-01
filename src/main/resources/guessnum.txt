@@ -12,7 +12,7 @@ USE guessnum;
 
  CREATE TABLE guessnumtable (
    id BIGINT AUTO_INCREMENT NOT NULL,
-   time INT NOT NULL,
+   time VARCHAR(50) NOT NULL,
    inputNum INT NOT NULL,
    targetNum INT NOT NULL,
    result BOOL NOT NULL,
