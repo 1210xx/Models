@@ -101,7 +101,7 @@ class SocketHandle extends Thread {
 
     //具体的处理方式，只包括正确的请求和错误请求
     private void handle(InputStream inputStream, OutputStream outputStream) throws IOException {
-        //创建输入流
+        //创建输入流，将抽象inputStream字节流转换为InputStreamReader直接流，然后转换为缓冲字符流BufferedReader
         Reader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         //创建输出流
         Writer writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
@@ -116,6 +116,7 @@ class SocketHandle extends Thread {
         for (; ; ) {
             //读取传入的头部信息
             String header = ((BufferedReader) reader).readLine();
+            //判断连接的socket的头部是否为空
             if (header.isEmpty()) {
                 break;
             }

@@ -114,39 +114,15 @@ public class GuessNum {
         dbUtilPool.clearTable();
         int destNum = new Random().nextInt(100);
         int inputNum = -1;
-        int resultFlag = -1;
+        GuessNum guessNum = new GuessNum();
         try (Scanner scanner = new Scanner(System.in)) {
-            inputNum = scanner.nextInt();
-            while (destNum != inputNum) {
-                resultFlag = WRONG;
-                if (inputNum < destNum) {
-                    Date time = new Time(System.currentTimeMillis());
-                    String stringTime = time.toString();
-                    dbUtilPool.reconrdState(stringTime,inputNum, destNum, resultFlag);
-                    System.out.println("Oops, small,please try another");
-                    System.out.println("有点小，重试一下呢");
-                    inputNum = scanner.nextInt();
-                } else {
-                    Date time = new Time(System.currentTimeMillis());
-                    String stringTime = time.toString();
-                    dbUtilPool.reconrdState(stringTime, inputNum, destNum, resultFlag);
-                    System.out.println("Oh, big,please try another");
-                    System.out.println("大了，小点试试？？？");
-                    inputNum = scanner.nextInt();
-                }
+            while (scanner.hasNext()){
+                inputNum = scanner.nextInt();
+                if (guessNum.guessNumApp(inputNum,destNum))
+                    return true;
             }
         }
-        resultFlag = RIGHT;
-        Date time = new Time(System.currentTimeMillis());
-        String stringTime = time.toString();
-        dbUtilPool.reconrdState(stringTime, inputNum, destNum, resultFlag);
-        System.out.println("Congratulation!!!");
-        System.out.println("！！！！恭喜！！！！");
-        System.out.println("\n");
-        System.out.println("---------------RESULT----------------");
-        System.out.println("----------------结果----------------");
-        dbUtilPool.printRecord();
-        return true;
+        return false;
     }
 
     /**

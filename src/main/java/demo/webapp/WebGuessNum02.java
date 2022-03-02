@@ -7,7 +7,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 
 /**
- * <head>web编程GuessNum01</head>
+ * <head>web编程GuessNum02</head>
  *
  * <p>
  *     <ol>
@@ -23,7 +23,7 @@ import java.nio.charset.StandardCharsets;
  *     </ol>
  * </p>
  */
-public class WebGuessNum {
+public class WebGuessNum02 {
     public static void main(String[] args) throws IOException {
 //        GuessNum guessNum = new GuessNum();
 //        guessNum.guessNumApp();
@@ -51,10 +51,10 @@ public class WebGuessNum {
 }
 
 
-class GuessNumSocketHandle extends Thread {
+class GuessNumSocketHandle02 extends Thread {
     Socket socket;
 
-    public GuessNumSocketHandle(Socket socket) {
+    public GuessNumSocketHandle02(Socket socket) {
         this.socket = socket;
     }
 
@@ -86,10 +86,7 @@ class GuessNumSocketHandle extends Thread {
             requestStatus = true;
         }
         String[] headerStrings = firstLine.split(" ");
-//        for (String s:headerStrings){
-//            System.out.println("headStrings----");
-//            System.out.println(s);
-//        }
+
         String name = null;
         String[] nameStrings = headerStrings[1].split("=");
         String parameter = nameStrings[0].substring(2);
@@ -99,12 +96,6 @@ class GuessNumSocketHandle extends Thread {
             name = "World";
         }
 
-//        char[] reqMethod = new char[3];
-//        int n = reader.read(reqMethod,0,3);
-//        System.out.println("reqMethod: " + String.valueOf(reqMethod));
-//        if (String.valueOf(reqMethod).startsWith("GET")) {
-//            requestStatus = true;
-//        }
         for (; ; ) {
             String header = reader.readLine();
             if (header.isEmpty()) {
