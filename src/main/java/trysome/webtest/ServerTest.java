@@ -16,7 +16,7 @@ public class ServerTest {
     //static HttpClient httpClient = HttpClient.newBuilder().build();
 
     public static void main(String[] args) throws IOException {
-        //serverFun();
+        serverFun();
 
 
     }

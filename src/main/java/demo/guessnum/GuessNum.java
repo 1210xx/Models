@@ -1,5 +1,7 @@
 package demo.guessnum;
 
+import javafx.beans.binding.When;
+
 import java.sql.Time;
 import java.util.Date;
 import java.util.Random;
@@ -31,12 +33,33 @@ public class GuessNum {
 //        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
 //        dbUtil.clearTable();
 //        DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
-        dbUtilPool.clearTable();
+//        dbUtilPool.clearTable();
+        //测试对内app
+//        GuessNum guessNum = new GuessNum();
+//        guessNum.guessNumApp();
+        //测试对内appre
         GuessNum guessNum = new GuessNum();
-        guessNum.guessNumApp();
+        guessNum.guessNumAppRe();
+        //测试对外API
+//        Scanner scanner = new Scanner(System.in);
+//        GuessNum guessNum = new GuessNum();
+//        int targetNum = new Random().nextInt(100);
+//        dbUtilPool.clearTable();
+//        while (scanner.hasNext()){
+//            int inputNum = scanner.nextInt();
+//            if (guessNum.guessNumApp(inputNum,targetNum))
+//                return;
+//        }
     }
 
+    /**
+     * 控制台开启的完整程序
+     *
+     * @return 程序执行结果
+     */
     public boolean guessNumApp(){
+        //清楚之前的数据库信息
+        dbUtilPool.clearTable();
         //产生100以内的随机数
         int destNum = new Random().nextInt(100);
         //System.out.println(destNum);
@@ -67,7 +90,7 @@ public class GuessNum {
 //                    dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
                     dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
                     System.out.println("Oh, big,please try another");
-                    System.out.println("大了，网小点试试？？？");
+                    System.out.println("大了，小点试试？？？");
                     srcNum = scanner.nextInt();
                 }
             }
@@ -77,10 +100,113 @@ public class GuessNum {
         String stringTime = time.toString();
 //        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
         dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
-        System.out.println("\r\n");
         System.out.println("Congratulation!!!");
         System.out.println("！！！！恭喜！！！！");
 //        dbUtil.printRecord();
+        System.out.println("\n");
+        System.out.println("---------------RESULT----------------");
+        System.out.println("----------------结果----------------");
+        dbUtilPool.printRecord();
+        return true;
+    }
+
+    public boolean guessNumAppRe(){
+        dbUtilPool.clearTable();
+        int destNum = new Random().nextInt(100);
+        int inputNum = -1;
+        int resultFlag = -1;
+        try (Scanner scanner = new Scanner(System.in)) {
+            inputNum = scanner.nextInt();
+            while (destNum != inputNum) {
+                resultFlag = WRONG;
+                if (inputNum < destNum) {
+                    Date time = new Time(System.currentTimeMillis());
+                    String stringTime = time.toString();
+                    dbUtilPool.reconrdState(stringTime,inputNum, destNum, resultFlag);
+                    System.out.println("Oops, small,please try another");
+                    System.out.println("有点小，重试一下呢");
+                    inputNum = scanner.nextInt();
+                } else {
+                    Date time = new Time(System.currentTimeMillis());
+                    String stringTime = time.toString();
+                    dbUtilPool.reconrdState(stringTime, inputNum, destNum, resultFlag);
+                    System.out.println("Oh, big,please try another");
+                    System.out.println("大了，小点试试？？？");
+                    inputNum = scanner.nextInt();
+                }
+            }
+        }
+        resultFlag = RIGHT;
+        Date time = new Time(System.currentTimeMillis());
+        String stringTime = time.toString();
+        dbUtilPool.reconrdState(stringTime, inputNum, destNum, resultFlag);
+        System.out.println("Congratulation!!!");
+        System.out.println("！！！！恭喜！！！！");
+        System.out.println("\n");
+        System.out.println("---------------RESULT----------------");
+        System.out.println("----------------结果----------------");
+        dbUtilPool.printRecord();
+        return true;
+    }
+
+    /**
+     * 对外API
+     * @param inputNum 输入数
+     * @param targetNum 目标数
+     * @return 程序结果
+     */
+    public boolean guessNumApp(int inputNum, int targetNum){
+//        dbUtilPool.clearTable();
+        //产生100以内的随机数
+//        int destNum = new Random().nextInt(100);
+        int destNum = targetNum;
+        //System.out.println(destNum);
+        //初始化输入数
+//        int srcNum = -1;
+        int srcNum = inputNum;
+        //结果标志
+        int resultFlag = -1;
+        //数据库工具
+//        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        //数据连接池
+//        DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        //开启接收
+//        try (Scanner scanner = new Scanner(System.in)) {
+//            srcNum = scanner.nextInt();
+            while (destNum != srcNum) {
+                resultFlag = WRONG;
+                if (srcNum < destNum) {
+                    Date time = new Time(System.currentTimeMillis());
+                    String stringTime = time.toString();
+//                    dbUtil.reconrdState(stringTime,srcNum, destNum, resultFlag);
+                    dbUtilPool.reconrdState(stringTime,srcNum, destNum, resultFlag);
+                    System.out.println("Oops, small,please try another");
+                    System.out.println("有点小，重试一下呢");
+//                    srcNum = scanner.nextInt();
+                    return false;
+                } else {
+                    Date time = new Time(System.currentTimeMillis());
+                    String stringTime = time.toString();
+//                    dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+                    dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
+                    System.out.println("Oh, big,please try another");
+                    System.out.println("大了，网小点试试？？？");
+//                    srcNum = scanner.nextInt();
+                    return false;
+                }
+            }
+//        }
+        resultFlag = RIGHT;
+        Date time = new Time(System.currentTimeMillis());
+        String stringTime = time.toString();
+//        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
+        dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
+        System.out.println("Congratulation!!!");
+        System.out.println("！！！！恭喜！！！！");
+//        dbUtil.printRecord();
+        System.out.println("\n");
+        System.out.println("---------------RESULT----------------");
+        System.out.println("----------------结果----------------");
         dbUtilPool.printRecord();
         return true;
     }
