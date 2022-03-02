@@ -1,10 +1,15 @@
 package demo.webapp;
 
 
+import demo.guessnum.DBUtilPool;
+import demo.guessnum.GuessNum;
+
 import java.io.*;
+import java.lang.reflect.Type;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
+import java.util.Random;
 
 /**
  * <head>web编程GuessNum02</head>
@@ -24,14 +29,20 @@ import java.nio.charset.StandardCharsets;
  * </p>
  */
 public class WebGuessNum02 {
+
+    GuessNum guessNum = new GuessNum();
+    DBUtilPool dbUtilPool = new DBUtilPool(guessNum.JDBC_URL, guessNum.JDBC_USER,guessNum.JDBC_PASSWORD);
+
+    public static int targetNum = new Random().nextInt(100);
+
     public static void main(String[] args) throws IOException {
 //        GuessNum guessNum = new GuessNum();
 //        guessNum.guessNumApp();
-        socketServer();
+        new WebGuessNum02().socketServer();
     }
 
 
-    public static void socketServer() throws IOException {
+    public  void socketServer() throws IOException {
         ServerSocket serverSocket = new ServerSocket(8888);
         System.out.println("Server is running....(listening port: 8888)");
 //        编译前              编译后
@@ -41,6 +52,7 @@ public class WebGuessNum02 {
 //                          jmp foo+18h
 //        编译前                 编译后
 //        for (；；)；          jmp foo+23h 　　
+        dbUtilPool.clearTable();
         for (; ; ) {
             Socket socket = serverSocket.accept();
             System.out.println("connected from " + socket.getRemoteSocketAddress());
@@ -77,6 +89,7 @@ class GuessNumSocketHandle02 extends Thread {
         }
     }
 
+    //todo:需要重新修改GuessNumm
     private void handle(InputStream inputStream, OutputStream outputStream) throws IOException {
         BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream, StandardCharsets.UTF_8));
         BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(outputStream, StandardCharsets.UTF_8));
@@ -86,25 +99,42 @@ class GuessNumSocketHandle02 extends Thread {
             requestStatus = true;
         }
         String[] headerStrings = firstLine.split(" ");
-
+        for (String s : headerStrings){
+            System.out.println(s);
+        }
         String name = null;
-        String[] nameStrings = headerStrings[1].split("=");
-        String parameter = nameStrings[0].substring(2);
-        if (parameter.equalsIgnoreCase("name")){
-            name = nameStrings[1];
+        String[] paraStrings = headerStrings[1].split("=");
+        String parameterValue = paraStrings[0].substring(2);
+        if (parameterValue.equalsIgnoreCase("name")){
+            name = paraStrings[1];
         }else{
             name = "World";
         }
+
+        int inputNum = -1;
+        String inputNumString = headerStrings[1].substring(1);
+        System.out.println(inputNumString);
+        inputNum = Integer.parseInt(inputNumString);
+        System.out.println("inputNum (INT) :   "  + inputNum  );
+        GuessNum guessNum = new GuessNum();
+        String printMessage ;
+        //todo：逻辑不完善
+        if (guessNum.guessNumApp(inputNum, WebGuessNum02.targetNum)){
+            printMessage = "Congratulation!";
+        }else{
+            printMessage = "Wrong ! Retry";
+        }
+
 
         for (; ; ) {
             String header = reader.readLine();
             if (header.isEmpty()) {
                 break;
             }
-            System.out.println("===============");
-            System.out.println(header);
+//            System.out.println("===============");
+//            System.out.println(header);
         }
-        System.out.println("-----------------");
+//        System.out.println("-----------------");
         System.out.println(requestStatus ? "requestStatus: Request OK" : "requestStatus: Request ERROR");
 
         if (!requestStatus) {
@@ -114,7 +144,7 @@ class GuessNumSocketHandle02 extends Thread {
             //清空输出流中的缓存
             writer.flush();
         } else {
-            String printInfo = "<html><body><h1>hello, " + name +" !!!</h1></body></html>";
+            String printInfo = "<html><body><h1>"+printMessage+"</h1></body></html>";
             int length = printInfo.getBytes(StandardCharsets.UTF_8).length;
             writer.write("HTTP/1.0 200 OK\r\n");
             writer.write("Connection: close\r\n");

@@ -17,17 +17,17 @@ import java.util.Scanner;
  * 3 当用户猜中数字后，除了提示恭喜之外，还要输出猜数的历史记录（按时间倒序输出）
  */
 public class GuessNum {
-    static String JDBC_URL = "jdbc:mysql://localhost:3306/guessnum?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
+    public String JDBC_URL = "jdbc:mysql://localhost:3306/guessnum?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     //        String JDBC_USER = "root";
 //        String JDBC_PASSWORD = "password";
-    static String JDBC_USER = "guessnum";
-    static String JDBC_PASSWORD = "guessnumpassword";
+    public String JDBC_USER = "guessnum";
+    public String JDBC_PASSWORD = "guessnumpassword";
 
     //结果标记
     final static int WRONG = 0;
     final static int RIGHT = 1;
 
-    static DBUtilPool dbUtilPool = new DBUtilPool(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+    DBUtilPool dbUtilPool = new DBUtilPool(this.JDBC_URL, this.JDBC_USER, this.JDBC_PASSWORD);
 
     public static void main(String[] args) {
 //        DBUtil dbUtil = new DBUtil(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
@@ -100,7 +100,7 @@ public class GuessNum {
         String stringTime = time.toString();
 //        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
         dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
-        System.out.println("Congratulation!!!");
+        System.out.println("!!!Congratulation!!!");
         System.out.println("！！！！恭喜！！！！");
 //        dbUtil.printRecord();
         System.out.println("\n");
@@ -166,7 +166,7 @@ public class GuessNum {
 //                    dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
                     dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
                     System.out.println("Oh, big,please try another");
-                    System.out.println("大了，网小点试试？？？");
+                    System.out.println("大了，小点试试？？？");
 //                    srcNum = scanner.nextInt();
                     return false;
                 }
@@ -177,7 +177,7 @@ public class GuessNum {
         String stringTime = time.toString();
 //        dbUtil.reconrdState(stringTime, srcNum, destNum, resultFlag);
         dbUtilPool.reconrdState(stringTime, srcNum, destNum, resultFlag);
-        System.out.println("Congratulation!!!");
+        System.out.println("!!!Congratulation!!!");
         System.out.println("！！！！恭喜！！！！");
 //        dbUtil.printRecord();
         System.out.println("\n");
