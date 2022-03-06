@@ -75,8 +75,8 @@ import java.util.Map;
  */
 
 //WebServlet注解表示这是一个Servlet，并映射到地址/:
-@WebServlet(urlPatterns = "/")
-public class ServeletTest extends HttpServlet {
+@WebServlet(urlPatterns = "/servletTest")
+public class ServletTest extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws IOException {
         //获取参数map
         Map<String, String[]> parameterMap = req.getParameterMap();

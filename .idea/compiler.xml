@@ -13,4 +13,10 @@
       <module name="Models" target="8" />
     </bytecodeTargetLevel>
   </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_STRING" value="-parameter" />
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="Models" options="-parameters" />
+    </option>
+  </component>
 </project>
