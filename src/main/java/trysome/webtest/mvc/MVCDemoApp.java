@@ -11,15 +11,21 @@ import java.io.File;
 
 public class MVCDemoApp {
     public static void main(String[] args) throws LifecycleException {
-        //Todo:参见EmbedTomcatApp
         Tomcat tomcat = new Tomcat();
         tomcat.setPort(Integer.getInteger("port",8866));
+        //获取默认的http connector
         tomcat.getConnector();
-        Context context = tomcat.addWebapp("", new File("src/main/webapp").getAbsolutePath());
-        WebResourceRoot resourceRoot = new StandardRoot(context);
+        //相当于将自己编写的war包放入webapp目录
+        //contextPath : 相当于放入webapp目录的层级
+        //docBase : context的基本目录 base dir for the context，for static files. Must exist, relative to the server home
+        Context ctx = tomcat.addWebapp("/", new File("src/main/webapp").getAbsolutePath());
+        //创建一个完整的webapp资源集合
+        WebResourceRoot resourceRoot = new StandardRoot(ctx);
+        //为webapp新增一个'Pre'资源
         resourceRoot.addPreResources(new DirResourceSet(resourceRoot, "/WEB-INF/classes", new File("target/classes").getAbsolutePath(),"/"));
-        context.setResources(resourceRoot);
+        ctx.setResources(resourceRoot);
         tomcat.start();
+        //Wait until a proper shutdown command is received, then return.
         tomcat.getServer().await();
     }
 

@@ -9,6 +9,7 @@ import org.apache.catalina.webresources.StandardRoot;
 
 import java.io.File;
 
+//具体注释看trysome/webtest/mvc/MVCDemoApp.java
 public class EmbedTomcatApp {
     public static void main(String[] args) throws LifecycleException, InterruptedException {
         //启动tomcat
@@ -19,7 +20,6 @@ public class EmbedTomcatApp {
         Context context = tomcat.addWebapp("", new File("src/main/webapp").getAbsolutePath());
         //设置ROOT
         WebResourceRoot resourceRoot = new StandardRoot(context);
-        //TODO:https://tomcat.apache.org/tomcat-8.0-doc/api/org/apache/catalina/WebResourceRoot.html
         resourceRoot.addPreResources(
                 new DirResourceSet(resourceRoot,
                         "/WEB-INF/classes",

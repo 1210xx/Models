@@ -21,8 +21,27 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.util.*;
 
-
+//Servlet注解，标注servlet以及请求地址
 @WebServlet(urlPatterns = "/")
+/**
+ * 继承基本的HttpServlet实现DispatcherServlet
+ * 整个框架如下：
+ *    HTTP Request    ┌─────────────────┐
+ * ──────────────────>│DispatcherServlet│
+ *                    └─────────────────┘
+ *                             │
+ *                ┌────────────┼────────────┐
+ *                ▼            ▼            ▼
+ *          ┌───────────┐┌───────────┐┌───────────┐
+ *          │Controller1││Controller2││Controller3│
+ *          └───────────┘└───────────┘└───────────┘
+ *                │            │            │
+ *                └────────────┼────────────┘
+ *                             ▼
+ *    HTTP Response ┌────────────────────┐
+ * <────────────────│render(ModelAndView)│
+ *                  └────────────────────┘
+ */
 public class DispatcherServlet extends HttpServlet {
 
 //    private static final Set<Class<?>> supportedGetParameterTypes = Arrays.asList(int.class, long.class, boolean.class,
@@ -30,41 +49,50 @@ public class DispatcherServlet extends HttpServlet {
 //
 //    private static final Set<Class<?>> supportedPostParameterTypes = Arrays.asList(HttpServletRequest.class,
 //            HttpServletResponse.class, HttpSession.class);
-
+    //GET请求的列表，应该是不可修改的Set，java8麻烦，就懒得改了
     private static final List<Class<?>> supportedGetParameterTypes = Arrays.asList(int.class, long.class, boolean.class,
             String.class, HttpServletRequest.class, HttpServletResponse.class, HttpSession.class);
-
+    //如上，POST请求的参数列表
     private static final List<Class<?>> supportedPostParameterTypes = Arrays.asList(HttpServletRequest.class,
             HttpServletResponse.class, HttpSession.class);
 
-
+    //日志
     private final Logger logger = LoggerFactory.getLogger(getClass());
-
+    //GET请求的路径和对应的GetDispatcher
     private Map<String, GetDispatcher> getMappings = new HashMap<>();
-
+    //POST请求的路径和对应的PostDispatcher
     private Map<String, PostDispatcher> postMappings = new HashMap<>();
-
+    //MVC中的C的列表
     private List<Class<?>> controllers = Arrays.asList(IndexController.class, UserController.class);
-
+    //渲染引擎
     private ViewEngine viewEngine;
 
+    /**
+     * HttpServlet的初始化方法
+     * 初始化所有Get和Post的映射，以及用于渲染的模板引擎
+     * @throws ServletException
+     */
     @Override
     public void init() throws ServletException {
+        //日志打印
         logger.info("init {} ....", getClass().getSimpleName());
-
+        //提供一些功能将数据集与对象转换的实现，jackson类
         ObjectMapper objectMapper = new ObjectMapper();
-
+        //配置
         objectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-
+        //初始化映射
         for (Class<?> controllerClass : controllers) {
             try {
                 Object controllerInstance = controllerClass.getConstructor().newInstance();
                 for (Method method : controllerClass.getMethods()) {
+                    //是否存在注解为GetMapping的类
                     if (method.getAnnotation(GetMapping.class) != null) {
+                        //返回值判断
                         if (method.getReturnType() != ModelAndView.class && method.getReturnType() != void.class) {
                             throw new UnsupportedOperationException("Unsupported return type : " + method.getReturnType() + " for method: " + method);
                         }
                         for (Class<?> parameterClass : method.getParameterTypes()) {
+                            //判断GET支持的类型列表
                             if (!supportedGetParameterTypes.contains(parameterClass)) {
                                 throw new UnsupportedOperationException("Unsupported parameter type : " + parameterClass + " for method: " + method);
                             }
@@ -146,11 +174,16 @@ public class DispatcherServlet extends HttpServlet {
     }
 }
 
+/**
+ * 创建基本Dispatcher的抽象类
+ */
 abstract class AbstractDispatcher {
     public abstract ModelAndView invoke(HttpServletRequest request, HttpServletResponse response) throws IOException, ReflectiveOperationException;
 }
 
-
+/**
+ * 继承抽象类，实现GetDispatcher
+ */
 class GetDispatcher extends AbstractDispatcher {
     final Object instance;
     final Method method;
@@ -199,6 +232,9 @@ class GetDispatcher extends AbstractDispatcher {
     }
 }
 
+/**
+ * 继承抽象类，实现PostDispatcher
+ */
 class PostDispatcher extends AbstractDispatcher {
     final Object instance;
     final Method method;
