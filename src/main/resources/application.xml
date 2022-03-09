@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<beans xmlns = "http://www.springframework.org/schema/beans"
+       xmlns:xsi = "http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation = "http://www.springframework.org/schema/beans
+            https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+<bean id = "userService" class = "trysome.spring.service.UserService">
+    <property name = "mailService" ref ="mailService"/>
+</bean>
+<bean id ="mailService" class="trysome.spring.service.MailService"/>
+</beans>
