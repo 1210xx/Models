@@ -1,11 +1,17 @@
 package trysome.spring.service;
 
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+@Component
 public class UserService {
-    private MailService mailService;
+
+    @Autowired
+    MailService mailService;
 
     public void setMailService(MailService mailService){
         this.mailService = mailService;
