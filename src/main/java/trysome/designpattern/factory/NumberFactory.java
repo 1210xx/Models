@@ -1,4 +1,4 @@
-package trysome.designpattern;
+package trysome.designpattern.factory;
 
 /**
  * 工厂方法可以隐藏创建产品的细节，且不一定每次都会真正创建产品，

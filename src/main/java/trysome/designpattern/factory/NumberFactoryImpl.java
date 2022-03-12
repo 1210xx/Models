@@ -1,4 +1,4 @@
-package trysome.designpattern;
+package trysome.designpattern.factory;
 
 import java.math.BigDecimal;
 
