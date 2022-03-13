@@ -10,11 +10,15 @@ import java.util.Queue;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.logging.Logger;
 
+/**
+ * PooledConnectionProxy的idleQueue由PooledDataSource维护
+ */
 public class PooledDataSource implements DataSource {
     private String url;
     private String username;
     private String password;
 
+    //维护空闲队列
     private Queue<PooledConnectionProxy> idleQueue = new ArrayBlockingQueue<>(100);
 
     public PooledDataSource(String url, String user, String password) {
@@ -25,15 +29,21 @@ public class PooledDataSource implements DataSource {
 
     @Override
     public Connection getConnection(String username, String password) throws SQLException{
+        //首先看空闲队列中是否有空闲Connection
         PooledConnectionProxy conn = idleQueue.poll();
         if (conn == null){
             conn = openNewConnection();
         }else {
-            System.out.println("Return pooled connection: "+ conn.target);
+            System.out.println("Return pooled connection: "+ conn.realConnection);
         }
         return conn;
     }
 
+    /**
+     * 获取一个新的Connection
+     * @return 返回新的PooledConnectionProxy的Connection
+     * @throws SQLException 创建Connection的异常捕获
+     */
     private PooledConnectionProxy openNewConnection() throws SQLException{
         Connection conn = DriverManager.getConnection(url,username,password);
         System.out.println("Open new connection: " + conn);

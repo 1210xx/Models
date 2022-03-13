@@ -5,10 +5,16 @@ import java.util.Map;
 import java.util.Properties;
 import java.util.concurrent.Executor;
 
+/**
+ * 为了简化代码，针对Connection接口做一个抽象代理类。
+ * 因为Connection中的定义的方法太多，后面我们只需要继承AbstractConnectionProxy
+ *
+ */
 public abstract class AbstractConnectionProxy implements Connection {
-
+    //抽象方法获取实际的Connection
     protected abstract Connection getRealConnection();
 
+    //通过实际的Connection变量，覆写每一个Connection方法
 
     @Override
     public Statement createStatement() throws SQLException {

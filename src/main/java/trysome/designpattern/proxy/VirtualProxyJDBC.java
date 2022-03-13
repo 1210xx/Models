@@ -49,23 +49,68 @@ import java.sql.SQLException;
  *          通过内部的计数器可以在外部调用者都不使用后自动释放它。
  *      </li>
  *  </ol>
+ *
+ *  <head>虚拟代理实现JDBC</head>
+ *  <p>
+ *      主要就是在创建链接的并未真正创建链接，直至第一次执行SQL.
+ *  </p>
+ *
+ *  <p>
+ *      <b>VirtualProxyJDBC</b>用来调用JDBCProxy应用代理方式创建JDBC链接
+ *  </p>
+ *
+ *  <p>
+ *      <b>AbstractConnectionProxy</b>将所有的Connection接口方法实现（利用实际的Connection对象），
+ *      以用来当做本次手动实现ProxyJDBC的基础类。
+ *  </p>
+ *
+ *  <p>
+ *      <b>LazyConnectionProxy</b>继承自AbstractConnectionProxy，覆写getRealConnection方法和Close方法
+ *      利用Java1.8的Supplier新建Connection对象
+ *  </p>
+ *
+ *  <p>
+ *      <b>DataSource</b>用来封装DriverManager.getConnection的过程。
+ *      使得创建Connection和使用Connection更加独立
+ *      <br>
+ *      <b>LazyDataSource：</b>
+ *      封装getConnection使用LazyConnectionProxy创建新的Connection
+ *  </p>
+ *
+ *  <p>
+ *      <b>PooledConnectionProxy</b>
+ *      实现AbstractConnectionProxy，创建连接池的代理，维护一个队列实现复用Connection。
+ *      覆写close方法
+ *  </p>
+ *
+ *  <p>
+ *      <b>PooledDataSource</b> 创建PooledConnectionProxy的Connection对象的DataSource
+ *      主要通过覆写getConnection方法，实现复用
+ *  </p>
  */
 public class VirtualProxyJDBC {
+    //JDBC所需字段
     static String JDBC_URL = "jdbc:mysql://localhost:3306/learnjdbc?useSSL=false&characterEncoding=utf8&allowPublicKeyRetrieval=true&serverTimezone=UTC";
     static String JDBC_USER = "root";
     static String JDBC_PASSWORD = "password";
+
+    //程序入口
     public static void main(String[] args) throws SQLException{
         ProxyJDBC();
     }
+    //JDBC代理的运行方法
     public static void ProxyJDBC() throws SQLException {
+        //创建一个lazyDataSource，其中LazyDataSource为了看到延迟打开连接的DataSource
         DataSource lazyDataSource = new LazyDataSource(JDBC_URL, JDBC_USER, JDBC_PASSWORD);
+        //创建时并未打开链接
         System.out.println("get lazy connection....");
-
         try (Connection connection = lazyDataSource.getConnection()){
 
         }
+        //尝试执行sql，查看创建情况
         System.out.println("get lazy connection.....");
         try (Connection connection2 = lazyDataSource.getConnection()){
+            //调用LazyConnectionProxy继承自父类AbstractConnectionProxy的getRealConnection()方法，创建真正的Connection
             try (PreparedStatement ps = connection2.prepareStatement("SELECT * FROM students")){
                 try (ResultSet rs = ps.executeQuery()){
                     while (rs.next()){
@@ -75,6 +120,7 @@ public class VirtualProxyJDBC {
             }
         }
 
+        //连接池的复用
         DataSource pooledDataSource = new PooledDataSource(JDBC_URL,JDBC_USER,JDBC_PASSWORD);
         try (Connection conn = pooledDataSource.getConnection()){
 

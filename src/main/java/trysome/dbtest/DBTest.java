@@ -101,8 +101,5 @@ public class DBTest {
 
         }
 
-// TODO: 访问数据库...
-// 关闭连接:
-
     }
 }
