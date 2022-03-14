@@ -2,6 +2,7 @@ package trysome.spring.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import trysome.spring.metrics.MetricTime;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -40,6 +41,8 @@ public class UserService {
         return this.users.stream().filter(user -> user.getId() == id).findFirst().orElseThrow(RuntimeException::new);
     }
 
+    //监控register运行时间
+    @MetricTime("register")
     public User register(String email, String password, String name){
         users.forEach((user -> {
             if(user.getEmail().equalsIgnoreCase(email)){
