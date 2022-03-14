@@ -4,8 +4,8 @@
        xsi:schemaLocation = "http://www.springframework.org/schema/beans
             https://www.springframework.org/schema/beans/spring-beans.xsd">
 
-<bean id = "userService" class = "trysome.spring.service.UserService">
+<bean id = "userService" class = "trysome.springiocandaop.service.UserService">
     <property name = "mailService" ref ="mailService"/>
 </bean>
-<bean id ="mailService" class="trysome.spring.service.MailService"/>
+<bean id ="mailService" class="trysome.springiocandaop.service.MailService"/>
 </beans>

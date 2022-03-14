@@ -1,11 +1,9 @@
-package trysome.spring.metrics;
+package trysome.springiocandaop.metrics;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
-
-import javax.xml.bind.annotation.XmlAccessorOrder;
 
 /**
  * 在使用AOP时，要注意到虽然Spring容器可以把指定的方法通过AOP规则装配到指定的Bean的指定方法前后，

@@ -1,4 +1,4 @@
-package trysome.spring.metrics;
+package trysome.springiocandaop.metrics;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

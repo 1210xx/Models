@@ -1,10 +1,10 @@
-package trysome.spring;
+package trysome.springiocandaop;
 
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-import trysome.spring.service.User;
-import trysome.spring.service.UserService;
+import trysome.springiocandaop.service.User;
+import trysome.springiocandaop.service.UserService;
 
 public class Main {
     public static void main(String[] args) {

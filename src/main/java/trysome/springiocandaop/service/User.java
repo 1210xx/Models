@@ -1,4 +1,4 @@
-package trysome.spring.service;
+package trysome.springiocandaop.service;
 
 public class User {
     private long id;
