@@ -16,6 +16,7 @@
         <tomcat.version>9.0.26</tomcat.version>
         <jackson.version>2.10.0</jackson.version>
         <pebble.version>3.1.2</pebble.version>
+        <spring.version>5.2.2.RELEASE</spring.version>
     </properties>
 
    <dependencies>
@@ -78,7 +79,13 @@
        <dependency>
            <groupId>org.springframework</groupId>
            <artifactId>spring-context</artifactId>
-           <version>5.2.2.RELEASE</version>
+           <version>${spring.version}</version>
+       </dependency>
+       <!--引入AspectJ，使用AspectJ实现AOP比较方便，因为它的定义比较简单-->
+       <dependency>
+           <groupId>org.springframework</groupId>
+           <artifactId>spring-aspects</artifactId>
+           <version>${spring.version}</version>
        </dependency>
    </dependencies>
 
