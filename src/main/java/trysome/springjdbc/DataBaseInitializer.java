@@ -6,6 +6,9 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 
+/**
+ *  通过HSQLDB自带的工具来初始化数据库表
+ */
 @Component
 public class DataBaseInitializer {
     @Autowired

@@ -4,11 +4,12 @@ import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.PropertySource;
+import org.springframework.context.ApplicationContext;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
+import trysome.springjdbc.service.User;
+import trysome.springjdbc.service.UserService;
 
 import javax.sql.DataSource;
 
@@ -55,7 +56,7 @@ import javax.sql.DataSource;
 // 使用了ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
 @Configuration
 @ComponentScan
-@PropertySource("jdbc:properties")
+@PropertySource("jdbc.properties")
 public class AppConfig {
     @Value("${jdbc.url}")
     String jdbcUrl;
@@ -79,5 +80,23 @@ public class AppConfig {
     @Bean
     JdbcTemplate createJdbcTemplate(@Autowired DataSource dataSource){
         return new JdbcTemplate(dataSource);
+    }
+
+    public static void main(String[] args) {
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        UserService userService = applicationContext.getBean(UserService.class);
+        userService.register("bob@example.com", "password1", "Bob");
+        userService.register("alice@example.com", "password2", "Alice");
+        User bob = userService.getUserByName("Bob");
+        System.out.println(bob);
+        User tom = userService.register("tom@example.com", "password3", "Tom");
+        System.out.println(tom);
+        System.out.println("Total: " + userService.getUsers());
+        for (User user : userService.getUsers(1)){
+            System.out.println(user);
+        }
+
+        ((ConfigurableApplicationContext) applicationContext).close();
+
     }
 }
