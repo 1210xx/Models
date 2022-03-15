@@ -3,42 +3,29 @@ package trysome.springjdbc.springhibernate.entity;
 
 import javax.persistence.*;
 
+@NamedQueries(
+        @NamedQuery(
+                name = "login",
+                query = "SELECT u FROM User u WHERE u.email=?0 AND u.password=?1"
+        ))
 @Entity
-@Table(name = "users")
-public class User {
+public class User extends AbstractEntity{
     //映射使用的JavaBean，所有属性都使用包装类型而不是基本类型。
-    private Long id;
     private String email;
     private String password;
     private String name;
-    private Long createAt;
 
 
     public User() {
     }
 
-    public User(Long id, String email, String password, String name, Long createAt) {
-        this.id = id;
+    public User(String email, String password, String name) {
         this.email = email;
         this.password = password;
         this.name = name;
-        this.createAt = createAt;
     }
 
-
-    //@Id 表明主键
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(nullable = false, updatable = false)
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    @Column(nullable = false,unique = true,length = 100)
+    @Column(nullable = false,updatable = false,length = 100)
     public String getEmail() {
         return email;
     }
@@ -55,6 +42,7 @@ public class User {
     public void setPassword(String password) {
         this.password = password;
     }
+
     @Column(nullable = false,length = 100)
     public String getName() {
         return name;
@@ -62,13 +50,5 @@ public class User {
 
     public void setName(String name) {
         this.name = name;
-    }
-    @Column(nullable = false,updatable = false)
-    public Long getCreateAt() {
-        return createAt;
-    }
-
-    public void setCreateAt(Long createAt) {
-        this.createAt = createAt;
     }
 }
