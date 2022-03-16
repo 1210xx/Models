@@ -1,4 +1,4 @@
-package trysome.springjdbc.service;
+package trysome.springjdbc.springjdbctemplate.service;
 
 /**
  * 这里写一个Bean，在Spring容器启动时自动创建一个users表

@@ -1,6 +1,5 @@
-package trysome.springjdbc.service;
+package trysome.springjdbc.springjdbctemplate.service;
 
-import com.sun.org.apache.bcel.internal.generic.NEW;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.springframework.jdbc.core.JdbcTemplate;

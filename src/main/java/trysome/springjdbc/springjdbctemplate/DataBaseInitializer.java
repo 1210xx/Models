@@ -1,4 +1,4 @@
-package trysome.springjdbc;
+package trysome.springjdbc.springjdbctemplate;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.core.JdbcTemplate;

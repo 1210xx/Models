@@ -1,4 +1,4 @@
-package trysome.springjdbc;
+package trysome.springjdbc.springjdbctemplate;
 
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
@@ -8,8 +8,8 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.jdbc.core.JdbcTemplate;
-import trysome.springjdbc.service.User;
-import trysome.springjdbc.service.UserService;
+import trysome.springjdbc.springjdbctemplate.service.User;
+import trysome.springjdbc.springjdbctemplate.service.UserService;
 
 import javax.sql.DataSource;
 
@@ -57,7 +57,7 @@ import javax.sql.DataSource;
 @Configuration
 @ComponentScan
 @PropertySource("jdbc.properties")
-public class AppConfig {
+public class JdbcTemplateConfig {
     @Value("${jdbc.url}")
     String jdbcUrl;
     @Value("${jdbc.username}")
@@ -83,7 +83,7 @@ public class AppConfig {
     }
 
     public static void main(String[] args) {
-        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(AppConfig.class);
+        ApplicationContext applicationContext = new AnnotationConfigApplicationContext(JdbcTemplateConfig.class);
         UserService userService = applicationContext.getBean(UserService.class);
         userService.register("bob@example.com", "password1", "Bob");
         userService.register("alice@example.com", "password2", "Alice");

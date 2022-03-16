@@ -36,7 +36,7 @@ import java.util.Properties;
 @ComponentScan
 @EnableTransactionManagement
 @PropertySource("jdbc.properties")
-public class AppConfig {
+public class HibernateConfig {
     @Bean
     LocalSessionFactoryBean createSessionFactory(@Autowired DataSource dataSource){
         Properties props = new Properties();
@@ -82,7 +82,7 @@ public class AppConfig {
     }
 
     public static void main(String[] args) {
-        ApplicationContext context = new AnnotationConfigApplicationContext(AppConfig.class);
+        ApplicationContext context = new AnnotationConfigApplicationContext(HibernateConfig.class);
         UserService userService  = context.getBean(UserService.class);
         if (userService.fetchUserByEmail("bob@example.com") == null){
             User bob = userService.register("bob@example.com","bob123","bob");
