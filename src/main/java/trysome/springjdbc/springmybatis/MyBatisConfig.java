@@ -24,6 +24,7 @@ import javax.sql.DataSource;
 
 @Configurable
 @ComponentScan
+//有了@MapperScan，就可以让MyBatis自动扫描指定包的所有Mapper并创建实现类。在真正的业务逻辑中，我们可以直接注入
 @MapperScan("trysome.springjdbc.springmybatis.mapper")
 @EnableTransactionManagement
 @PropertySource("jdbc.properties")
